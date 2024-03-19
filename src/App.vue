@@ -12,6 +12,10 @@ const DEFAULT_STATE = {
 
 const data = ref(DEFAULT_STATE)
 
+const isReady = computed(() => {
+  return data.value.names.length > 1
+})
+
 const addNameToList = () => {
   const userName = data.value.inputName
   if (validate(userName)) {
@@ -43,6 +47,20 @@ const validate = (value) => {
 const removeName = (index) => {
   data.value.names.splice(index, 1)
 }
+
+const getRandomName = () => {
+  return data.value.names[Math.floor(Math.random() * data.value.names.length)]
+}
+
+const generateResult = () => {
+  let rand = getRandomName()
+  data.value.result = rand
+}
+
+const showResults = () => {
+  generateResult()
+  data.value.state = false
+}
 </script>
 
 <template>
@@ -62,8 +80,20 @@ const removeName = (index) => {
         {{ name }}
       </div>
     </div>
+    <div v-if="isReady" class="animate__animated animate__bounceIn">
+      <div class="action_button" @click="showResults">
+        Check the looser
+      </div>
+    </div>
   </div>
-  <div id="results" class="container" v-if="!data.state"></div>
+  <div id="results" class="container" v-if="!data.state">
+    <div class="result_container">
+      <h1>The looser is:</h1>
+      <div class="result_value">
+        {{ data.result }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
