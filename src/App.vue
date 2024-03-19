@@ -54,12 +54,30 @@ const getRandomName = () => {
 
 const generateResult = () => {
   let rand = getRandomName()
+  if (data.value.result !== '') {
+    while (rand === data.value.result) {
+      rand = getRandomName()
+    }
+  }
   data.value.result = rand
 }
 
 const showResults = () => {
   generateResult()
   data.value.state = false
+}
+
+const resetApp = () => {
+  data.value.state = true
+  data.value.inputName = ''
+  data.value.names = []
+  data.value.error = ''
+  data.value.showError = false
+  data.value.result = ''
+}
+
+const getNewResult = () => {
+  generateResult()
 }
 </script>
 
@@ -91,6 +109,13 @@ const showResults = () => {
       <h1>The looser is:</h1>
       <div class="result_value">
         {{ data.result }}
+      </div>
+      <div class="action_button" @click="resetApp">
+        Start over
+      </div>
+      <br>
+      <div class="action_button btn2" @click="getNewResult">
+        Don't like it, get a new name
       </div>
     </div>
   </div>
